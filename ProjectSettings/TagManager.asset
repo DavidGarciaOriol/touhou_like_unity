@@ -9,6 +9,11 @@ TagManager:
   - BombArea
   - Point
   - Power
+  - ColliderPoint
+  - EnemyBullet
+  - GrazeCollider
+  - PlayerHitbox
+  - AttractionArea
   layers:
   - Default
   - TransparentFX
@@ -20,8 +25,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

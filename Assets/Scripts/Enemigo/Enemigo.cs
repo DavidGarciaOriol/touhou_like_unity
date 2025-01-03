@@ -22,13 +22,17 @@ public class Enemigo : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     // Animación de muerte
-    public Animator animador;
+    private Animator animador;
 
     // Color original del enemigo
     private Color colorOriginal;
 
     // Collider del enemigo
     private Collider2D colliderEnemigo;
+
+    // Puntos que suelta el enemigo al morir
+    public GameObject puntoPrefab;
+
 
     void Start()
     {
@@ -105,6 +109,7 @@ public class Enemigo : MonoBehaviour
     {
         animador.SetTrigger("Morir");
         colliderEnemigo.enabled = false;
+        Instantiate(puntoPrefab, transform.position, Quaternion.identity);
         StartCoroutine(AnimacionDeMuerte());
     }
 
@@ -162,5 +167,4 @@ public class Enemigo : MonoBehaviour
         // Eliminar el objeto
         Destroy(gameObject);
     }
-
 }

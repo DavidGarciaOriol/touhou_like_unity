@@ -6,6 +6,9 @@ public class BalaJugador : MonoBehaviour
     public float velocidad = 10f;
     public int damage = 1;
 
+    Animator animacion;
+    SpriteRenderer sprite;
+
     void Start()
     {
 
