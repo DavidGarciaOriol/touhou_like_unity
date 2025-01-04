@@ -7,10 +7,10 @@ public class Enemigo : MonoBehaviour
     public Vector2 posicionDesplazamientoObjetivo;
 
     // Velocidad
-    public float velocidad = 1.85f;
+    public float velocidad = 2f;
 
     // Salud
-    public int salud = 3;
+    public int salud = 5;
 
     // Indica si el enemigo ha alcanzado si posición de disparo
     private bool posicionObjetivoAlcanzada = false;
@@ -33,13 +33,24 @@ public class Enemigo : MonoBehaviour
     // Puntos que suelta el enemigo al morir
     public GameObject puntoPrefab;
 
+    // Patrón de Balas
+    public PatronDeBalas[] patronesDeBalas;
+
+    // Instancia Patrón de Balas
+    GameObject patronInstancia;
+
+    // Tiempo entre ataques o duración del ataque
+    public float duracionAtaque = 3f;
+
+    // Numero de ciclos de disparo
+    public int ciclosDisparo = 3;
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         colorOriginal = spriteRenderer.color;
         animador = GetComponent<Animator>();
-        
+
         colliderEnemigo = GetComponent<Collider2D>();
     }
 
@@ -47,8 +58,8 @@ public class Enemigo : MonoBehaviour
     {
         if (!posicionObjetivoAlcanzada) {
             DesplazarseAlObjetivo();
-        } 
-        else 
+        }
+        else if (!patronInstancia.GetComponent<PatronDeBalas>().atacando)
         {
             AbandonarPantalla();
         }
@@ -62,6 +73,7 @@ public class Enemigo : MonoBehaviour
         if ((Vector2)transform.position == posicionDesplazamientoObjetivo)
         {
             posicionObjetivoAlcanzada = true;
+            StartCoroutine(RealizarAtaque());
 
             // Calcular el destino de salida
             if (transform.position.x >= 0)
@@ -75,6 +87,39 @@ public class Enemigo : MonoBehaviour
                 posicionSalida = new Vector2(4f, transform.position.y);
             }
         }
+
+    }
+
+    // Corrutina que se encarga de la lógica de ataque
+    private IEnumerator RealizarAtaque()
+    {
+        // Iniciar todos los patrones de balas asignados
+        foreach (var patronPrefab in patronesDeBalas)
+        {
+            if (patronPrefab != null)
+            {
+                patronInstancia = Instantiate(patronPrefab.gameObject, transform.position,  Quaternion.identity);
+                PatronDeBalas patron = patronInstancia.GetComponent<PatronDeBalas>();
+                patron.numeroIteraciones = ciclosDisparo;
+                patron.intervaloDisparo = duracionAtaque / ciclosDisparo;
+                patron.IniciarPatron(transform);
+            }
+        }
+
+        // Esperar el tiempo del ataque.
+        yield return new WaitForSeconds(duracionAtaque);
+
+        // Finalizar todos los patrones
+        foreach (var patronPrefab in patronesDeBalas)
+        {
+            if (patronPrefab != null)
+            {
+                patronInstancia.GetComponent<PatronDeBalas>().DetenerPatron();
+            }
+        }
+
+        // Comenzar el movimiento de salida
+        AbandonarPantalla();
     }
 
     // Movimiento para abandonar la pantalla y desaparecer
@@ -88,6 +133,7 @@ public class Enemigo : MonoBehaviour
         }
     }
 
+    // Cuando recibe daño del jugador
     public void RecibirDamage(int damageRecibido)
     {
         salud -= damageRecibido;
@@ -98,6 +144,7 @@ public class Enemigo : MonoBehaviour
         }
     }
 
+    // Parpadeo rojo al recibir daño
     IEnumerator EfectoAlSerGolpeado()
     {
         spriteRenderer.color = Color.red;
@@ -105,6 +152,7 @@ public class Enemigo : MonoBehaviour
         spriteRenderer.color = colorOriginal;
     }
 
+    // Cuando es derrotado
     void Morir()
     {
         animador.SetTrigger("Morir");
@@ -141,7 +189,7 @@ public class Enemigo : MonoBehaviour
             yield return null;
         }
 
-        // Ajustamos  nueva posición original y tiempo transcurrido
+        // Ajustamos nueva posición original y tiempo transcurrido
         posicionOriginal = transform.position;
         tiempoTranscurrido = 0f;
 
@@ -166,5 +214,17 @@ public class Enemigo : MonoBehaviour
 
         // Eliminar el objeto
         Destroy(gameObject);
+
+        yield break;
+    }
+
+    // Si el enemigo colisiona con la hitbox del jugador, resta vidas al mismo
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerHitbox"))
+        {
+            GameManager.instance.RestarVidas();
+            // GameManager.instance.RestarPuntos(2500);
+        }
     }
 }

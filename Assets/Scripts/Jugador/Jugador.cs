@@ -7,8 +7,7 @@ public class Jugador : MonoBehaviour
     public float velocidadNormal = 5f;
     public float velocidadReducida = 2f;
 
-    // Vidas del personaje
-    public int vidasReimu = 3;
+    bool estaReduciendoVelocidad = false;
 
     Vector2 velocidadActual;
 
@@ -55,8 +54,8 @@ public class Jugador : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        // Comprobar  tecla de reducción de velocidad
-        bool estaReduciendoVelocidad = Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("ZL") > 0.1f;
+        // Comprobar tecla de reducción de velocidad
+        estaReduciendoVelocidad = Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("ZL") > 0.1f;
 
         // Ajustar velocidad máxima según el estado de reducción
         velocidadMaxima = estaReduciendoVelocidad ? velocidadReducida : velocidadNormal;
@@ -66,18 +65,32 @@ public class Jugador : MonoBehaviour
     }
     void MostrarReimuHitbox()
     {
-        hitboxInterior.SetActive(true);
+        if (hitboxInterior != null)
+        {
+            SpriteRenderer sr = hitboxInterior.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.enabled = true; // Hacer la hitbox visible
+            }
+        }
     }
 
     void OcultarReimuHitbox()
     {
-        hitboxInterior.SetActive(false);
+        if (hitboxInterior != null)
+        {
+            SpriteRenderer sr = hitboxInterior.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.enabled = false; // Ocultar la hitbox visualmente
+            }
+        }
     }
 
     // Procesa el movimiento del jugador
     void Movimiento()
     {
-        if (direccionMovimiento.magnitude  > 0)
+        if (direccionMovimiento.magnitude > 0 && estaReduciendoVelocidad)
         {
             direccionMovimiento.Normalize();
         }
@@ -85,24 +98,23 @@ public class Jugador : MonoBehaviour
         rigidbody2D.velocity = new Vector2(direccionMovimiento.x * velocidadMaxima, direccionMovimiento.y * velocidadMaxima);
     }
 
+    public void RecibirDamage()
+    {
+        GameManager.instance.RestarVidas();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision != null) 
+        if (collision != null)
         {
-            if (collision.CompareTag("Enemy"))
+            if (collision.CompareTag("AttractionArea"))
             {
-                vidasReimu -= 1;
-            }
-        }
-
-        if (collision.CompareTag("AttractionArea"))
-        {
-            Punto[] puntosEnPantalla = FindObjectsOfType<Punto>();
-            foreach (Punto punto in puntosEnPantalla)
-            {
-                punto.ActivarAtraccion(transform);
+                Punto[] puntosEnPantalla = FindObjectsOfType<Punto>();
+                foreach (Punto punto in puntosEnPantalla)
+                {
+                    punto.ActivarAtraccion(transform);
+                }
             }
         }
     }
-
 }

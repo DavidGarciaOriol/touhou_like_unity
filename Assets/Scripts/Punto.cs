@@ -20,6 +20,7 @@ public class Punto : MonoBehaviour
 
     void Update()
     {
+        // Si está siendo atraido al juagdor, se desplaza hacia él hasta alcanzarlo, en caso contrario, solo cae hacia abajo
         if (siendoAtraidoAlJugador && jugador != null)
         {
             transform.position = Vector2.MoveTowards(transform.position, jugador.position, velocidadAtraccion * Time.deltaTime);
@@ -35,12 +36,14 @@ public class Punto : MonoBehaviour
         }
     }
 
+    // Inicia el estado de atracción al jugador si éste lo habilita entrando en la zona de atracción de puntos
     public void ActivarAtraccion(Transform jugadorTransform)
     {
         siendoAtraidoAlJugador = true;
         jugador = jugadorTransform;
     }
 
+    // Si choca con la hitbox de puntos del jugador, recibes los puntos, almacenándolos en la partida
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("ColliderPoint"))

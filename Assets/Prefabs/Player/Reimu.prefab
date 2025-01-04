@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balaPrefab: {fileID: 3024607057915445280, guid: 8bea1d61259acb34eb78caf5090ff95b, type: 3}
-  ratioDisparo: 0.1
+  ratioDisparo: 0.017
   posicionDisparo: {fileID: 221887119525223159}
 --- !u!70 &2652382943665302808
 CapsuleCollider2D:

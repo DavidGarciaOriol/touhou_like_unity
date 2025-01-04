@@ -7,7 +7,7 @@ public class GeneradorEnemigos : MonoBehaviour
 
     public GameObject enemigoPrefab;
 
-    public float intervaloDeGeneracion = 0.5f;
+    public float intervaloDeGeneracion = 1f;
     public float anchoAreaDeGeneracion = 6f;
 
     private float tiempoSiguienteGeneracion;
