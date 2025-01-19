@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Punto : MonoBehaviour
 {
-
     // Velocidades del punto
     public float velocidadCaida = 1f;
     public float velocidadAtraccion = 10f;
@@ -17,6 +16,10 @@ public class Punto : MonoBehaviour
 
     // Si está siendo atraido al jugador
     bool siendoAtraidoAlJugador = false;
+
+    // Referencia fuente de audio
+    [SerializeField]
+    AudioClip audioObjetoObtenido;
 
     void Update()
     {
@@ -46,8 +49,9 @@ public class Punto : MonoBehaviour
     // Si choca con la hitbox de puntos del jugador, recibes los puntos, almacenándolos en la partida
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("ColliderPoint"))
+        if (collision.CompareTag("ReimuPointsCollectionHitbox"))
         {
+            ControladorSonidos.instance.ReproducirSonido(audioObjetoObtenido);
             GameManager.instance.AgregarPuntos(100);
             Destroy(gameObject);
         }

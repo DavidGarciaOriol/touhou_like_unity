@@ -9,6 +9,7 @@ public class ManagerUI : MonoBehaviour
     public static ManagerUI instance;
     public TextMeshProUGUI textoPuntuacion;
     public TextMeshProUGUI textoVidas;
+    public TextMeshProUGUI textoGraze;
 
     private void Awake()
     {
@@ -30,5 +31,10 @@ public class ManagerUI : MonoBehaviour
     public void ActualizarTextoVidas(int nuevoNumeroVidas)
     {
         textoVidas.text = "Vidas: " + nuevoNumeroVidas;
+    }
+
+    public void ActualizarTextoGraze(int nuevoConteoGrazing)
+    {
+        textoGraze.text = "Graze: " + nuevoConteoGrazing;
     }
 }

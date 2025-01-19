@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5814004262966684911}
   - component: {fileID: -1027912075204466395}
   m_Layer: 0
-  m_Name: EnemigoRumia
+  m_Name: EnemigoRumiaDark
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 200698818, guid: a7fd417428e3224418b1d32cca498ecd, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3773585, g: 0.29369882, b: 0.3427407, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -145,14 +145,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   posicionDesplazamientoObjetivo: {x: 0, y: 0}
-  velocidad: 2
-  salud: 3
+  velocidad: 1.75
+  salud: 10
   puntoPrefab: {fileID: 5094499987204499163, guid: 473dcb4bcb186a448a229411a9dcacdd, type: 3}
-  cantidadPuntos: 1
+  cantidadPuntos: 3
   patronesDeBalas:
-  - {fileID: 1028792316105935624, guid: cb68c90421ec152438df9694bbdb0adf, type: 3}
+  - {fileID: 1028792316105935624, guid: b1649ac9a0300ac4787b61de5c3dfb20, type: 3}
   duracionAtaque: 2
-  ciclosDisparo: 2
+  ciclosDisparo: 1
 --- !u!95 &-1027912075204466395
 Animator:
   serializedVersion: 5

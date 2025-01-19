@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7741252720340995261}
   - component: {fileID: 9042299730836126469}
-  - component: {fileID: 7623720810722007631}
   - component: {fileID: 2717554041586269654}
+  - component: {fileID: 4595414931354046655}
   m_Layer: 0
   m_Name: GrazeHitbox
-  m_TagString: GrazeCollider
+  m_TagString: ReimuGrazeHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,19 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7623720810722007631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 584552945296709431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f91b5f8004129e24091efd23c17d3d71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotacionInversa: 1
 --- !u!58 &2717554041586269654
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -134,6 +121,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.7
+--- !u!114 &4595414931354046655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584552945296709431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a7878ed10b4c7047bed13a6d760e95e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotacionInversa: 1
 --- !u!1 &4819653952798974920
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,8 +267,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadNormal: 5
   velocidadReducida: 2
-  vidasReimu: 3
   hitboxInterior: {fileID: 9056550165411354631}
+  hitboxPuntos: {fileID: 6116768085385077016}
+  hitboxGraze: {fileID: 584552945296709431}
+  prefabExplosionParticulas: {fileID: 3344119282135001829, guid: 882b0daf381d70c41988ea1f9364d745, type: 3}
+  prefabPunto: {fileID: 5094499987204499163, guid: 473dcb4bcb186a448a229411a9dcacdd, type: 3}
+  posicionInicial: {fileID: 0}
+  tiempoInvulnerabilidad: 2
+  esInvulnerable: 0
+  audioMuerte: {fileID: 8300000, guid: a299a443e250c624f8ba43d7c13cff2b, type: 3}
 --- !u!114 &4006037198286180721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,8 +289,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balaPrefab: {fileID: 3024607057915445280, guid: 8bea1d61259acb34eb78caf5090ff95b, type: 3}
-  ratioDisparo: 0.017
+  ratioDisparo: 0.1
   posicionDisparo: {fileID: 221887119525223159}
+  audioDisparo: {fileID: 8300000, guid: 49f9494a71b26e84b8dd88fce0a337f2, type: 3}
 --- !u!70 &2652382943665302808
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -360,11 +368,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6092656965025377360}
   - component: {fileID: 8613742723261914262}
-  - component: {fileID: 4155239018373227414}
+  - component: {fileID: 8744467004274871135}
   - component: {fileID: 904516893790536288}
   m_Layer: 0
   m_Name: PointsHitbox
-  m_TagString: ColliderPoint
+  m_TagString: ReimuPointsCollectionHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -436,7 +444,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4155239018373227414
+--- !u!114 &8744467004274871135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -445,7 +453,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6116768085385077016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f91b5f8004129e24091efd23c17d3d71, type: 3}
+  m_Script: {fileID: 11500000, guid: cd0e50e24b6280a42bd896197ce44969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotacionInversa: 0
@@ -498,7 +506,7 @@ GameObject:
   - component: {fileID: 177345252367454340}
   m_Layer: 0
   m_Name: ReimuHitbox
-  m_TagString: PlayerHitbox
+  m_TagString: ReimuDamageHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -513,7 +521,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.034, y: 0.03, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5973278868646987286}
@@ -617,4 +625,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.2692028

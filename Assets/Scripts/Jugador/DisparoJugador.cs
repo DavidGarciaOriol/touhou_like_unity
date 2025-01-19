@@ -14,6 +14,10 @@ public class DisparoJugador : MonoBehaviour
     // Temporizador
     private float tiempoSiguienteDisparo;
 
+    // Clip de sonido
+    [SerializeField]
+    AudioClip audioDisparo;
+
     void Start()
     {
 
@@ -34,6 +38,7 @@ public class DisparoJugador : MonoBehaviour
     // Genera el disparo en la posición de disparo.
     void Disparar()
     {
+        // ControladorSonidos.instance.ReproducirSonido(audioDisparo);
         Instantiate(balaPrefab, posicionDisparo.position, Quaternion.identity);
     }
 }

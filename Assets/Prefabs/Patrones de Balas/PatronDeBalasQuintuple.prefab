@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7179878386482162557}
   - component: {fileID: 1028792316105935624}
   m_Layer: 0
-  m_Name: PatronDeBalas
+  m_Name: PatronDeBalasQuintuple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balaPrefab: {fileID: 1087696319449988661, guid: e2200ebd22be03946a0bb4d7b27e0f3d, type: 3}
-  intervaloDisparo: 0.5
-  numeroBalas: 3
+  intervaloDisparo: 0.75
+  numeroBalas: 5
   anguloInicial: 270
-  espaciadoAngulo: 15
-  velocidadBala: 4.5
+  espaciadoAngulo: 20
+  velocidadBala: 3
   numeroIteraciones: 1
   atacando: 0

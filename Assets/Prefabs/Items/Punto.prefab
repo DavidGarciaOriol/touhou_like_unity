@@ -101,6 +101,7 @@ MonoBehaviour:
   velocidadCaida: 1
   velocidadAtraccion: 10
   valor: 100
+  audioObjetoObtenido: {fileID: 8300000, guid: bb3e8256ebb19db4a8c25078423e237d, type: 3}
 --- !u!61 &3130900320730543678
 BoxCollider2D:
   m_ObjectHideFlags: 0

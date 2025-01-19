@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private int puntuacion = 0;
     private int vidasReimu = 3;
+    private int contadorGraze = 0;
 
     public GameObject panelGameOver;
 
@@ -52,6 +53,20 @@ public class GameManager : MonoBehaviour
         ActualizarPuntuacionUI();
     }
 
+    // Calcula puntos perdidos al perder una vida el juagdor
+    public int CalcularPuntosPerdidos()
+    {
+        int puntosPerdidos = 0;
+        if (puntuacion > 0)
+        {
+            puntosPerdidos = Mathf.RoundToInt(puntuacion * 0.2f);
+            RestarPuntos(puntosPerdidos);
+            
+        }
+
+        return puntosPerdidos; 
+    }
+
     public void RestarVidas()
     {
         vidasReimu --;
@@ -65,11 +80,17 @@ public class GameManager : MonoBehaviour
         ActualizarVidasUI();
     }
 
+    public void SumarContadorGraze()
+    {
+        contadorGraze ++;
+        ActualizarGrazingUI();
+    }
+
     private void VerificarGameOver()
     {
         if (vidasReimu <= 0)
         {
-            puntuacionFinal.text = "SCORE:" + puntuacion;
+            puntuacionFinal.text = "Score: " + puntuacion;
             panelGameOver.SetActive(true);
             Time.timeScale = 0; // Pausar el juego
         }
@@ -83,6 +104,11 @@ public class GameManager : MonoBehaviour
     void ActualizarVidasUI()
     {
         ManagerUI.instance.ActualizarTextoVidas(vidasReimu);
+    }
+
+    void ActualizarGrazingUI()
+    {
+        ManagerUI.instance.ActualizarTextoGraze(contadorGraze);
     }
 
     public void ReiniciarJuego()

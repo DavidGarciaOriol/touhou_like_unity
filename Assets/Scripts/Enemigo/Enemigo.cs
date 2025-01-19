@@ -32,6 +32,7 @@ public class Enemigo : MonoBehaviour
 
     // Puntos que suelta el enemigo al morir
     public GameObject puntoPrefab;
+    public int cantidadPuntos;
 
     // Patrón de Balas
     public PatronDeBalas[] patronesDeBalas;
@@ -157,8 +158,20 @@ public class Enemigo : MonoBehaviour
     {
         animador.SetTrigger("Morir");
         colliderEnemigo.enabled = false;
-        Instantiate(puntoPrefab, transform.position, Quaternion.identity);
+        SoltarPuntos();
         StartCoroutine(AnimacionDeMuerte());
+    }
+
+    void SoltarPuntos()
+    {
+        for (int i = 0; i < cantidadPuntos; i++)
+        {
+            Instantiate(puntoPrefab,
+                new Vector2(
+                    transform.position.x + Random.Range(-0.1f, 0.1f),
+                    transform.position.y + Random.Range(-0.1f, 0.1f)),
+                Quaternion.identity);
+        }
     }
 
     IEnumerator AnimacionDeMuerte()
@@ -221,10 +234,9 @@ public class Enemigo : MonoBehaviour
     // Si el enemigo colisiona con la hitbox del jugador, resta vidas al mismo
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerHitbox"))
+        if (collision.CompareTag("ReimuBullet"))
         {
-            GameManager.instance.RestarVidas();
-            // GameManager.instance.RestarPuntos(2500);
+            RecibirDamage(collision.GetComponent<BalaJugador>().damage);
         }
     }
 }
