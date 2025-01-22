@@ -10,7 +10,11 @@ public class HitboxGraze : MonoBehaviour
     Quaternion rotacion;
 
     // Puntos de Grazing
-    int puntos = 20;
+    int puntos = 10;
+
+    // Clip audio grazing
+    [SerializeField]
+    AudioClip audioGraze;
 
     // Update is called once per frame
     void Update()
@@ -27,6 +31,7 @@ public class HitboxGraze : MonoBehaviour
             
             if (collision.CompareTag("EnemyBullet") || collision.CompareTag("Enemy"))
             {
+                ControladorSonidos.instance.ReproducirSonido(audioGraze);
                 GameManager.instance.AgregarPuntos(puntos);
                 GameManager.instance.SumarContadorGraze();
             }

@@ -6,7 +6,11 @@ public class DisparoJugador : MonoBehaviour
     public GameObject balaPrefab;
 
     // Ritmo de disparo
-    public float ratioDisparo = 0.1f;
+    public float ratioDisparoBase = 0.1f;
+    float ratioDisparo;
+
+    // Modificador de daño
+    public int damageModificador;
 
     // Posición de salida de la bala / diapro
     public Transform posicionDisparo;
@@ -20,7 +24,7 @@ public class DisparoJugador : MonoBehaviour
 
     void Start()
     {
-
+        ratioDisparo = ratioDisparoBase;
     }
 
     void Update()
@@ -40,5 +44,14 @@ public class DisparoJugador : MonoBehaviour
     {
         // ControladorSonidos.instance.ReproducirSonido(audioDisparo);
         Instantiate(balaPrefab, posicionDisparo.position, Quaternion.identity);
+    }
+
+    void MejorarRatioDisparo(float modificador)
+    {
+        ratioDisparo -= modificador;
+    }
+    void ReiniciarRatioDisparo()
+    {
+        ratioDisparo = ratioDisparoBase;
     }
 }

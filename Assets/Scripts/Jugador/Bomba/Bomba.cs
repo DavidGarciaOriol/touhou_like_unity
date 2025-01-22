@@ -8,6 +8,9 @@ public class Bomba : MonoBehaviour
     [SerializeField] // Cooldown de la bomba
     float cooldownBomba = 45;
 
+    [SerializeField] // Daño de la bomba
+    int damageBomba = 100;
+
     [SerializeField] // Partículas de explosión de la bomba
     GameObject prefabParticulasOndaBomba;
 
@@ -19,6 +22,10 @@ public class Bomba : MonoBehaviour
 
     // Si la bomba está disponible
     private bool bombaDisponible = true;
+
+    // Clip audio bomba
+    [SerializeField]
+    AudioClip audioBomba;
 
     void Update()
     {
@@ -37,11 +44,33 @@ public class Bomba : MonoBehaviour
         // Instanciar el efecto de la onda expansiva
         if (prefabParticulasOndaBomba != null)
         {
-            Instantiate(prefabParticulasOndaBomba, transform.position, Quaternion.AngleAxis(-90, Vector3.right));
+            Instantiate(prefabParticulasOndaBomba, transform.position, Quaternion.identity);
         }
+
+        // Elimina a los enemigos y balas
+        ControladorSonidos.instance.ReproducirSonido(audioBomba);
+        LimpiarPantalla();
 
         // Reiniciar el cooldown
         StartCoroutine(ReiniciarCooldown());
+    }
+
+    private void LimpiarPantalla()
+    {
+        // Encuentra todos los objetos de tipo "Enemigo" y "Proyectil" en la escena y derrota / destruye
+        Enemigo[] enemigos = FindObjectsOfType<Enemigo>();
+        BalaEnemiga[] proyectiles = FindObjectsOfType<BalaEnemiga>();
+
+        foreach (Enemigo enemigo in enemigos)
+        {
+            enemigo.RecibirDamage(damageBomba);
+        }
+
+        foreach (BalaEnemiga proyectil in proyectiles)
+        {
+            Destroy(proyectil.gameObject);
+            GameManager.instance.AgregarPuntos(5);
+        }
     }
 
     private IEnumerator ReiniciarCooldown()

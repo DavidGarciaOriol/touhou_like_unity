@@ -1323,6 +1323,10 @@ PrefabInstance:
       propertyPath: posicionInicial
       value: 
       objectReference: {fileID: 326196275}
+    - target: {fileID: 4595414931354046655, guid: ea9f60e81c477a14aaa381c17a15e189, type: 3}
+      propertyPath: audioGraze
+      value: 
+      objectReference: {fileID: 8300000, guid: a820aa3814afd7846a92c0593fda0c08, type: 3}
     - target: {fileID: 4819653952798974920, guid: ea9f60e81c477a14aaa381c17a15e189, type: 3}
       propertyPath: m_Name
       value: Reimu
@@ -1380,8 +1384,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6893487217874600449, guid: ea9f60e81c477a14aaa381c17a15e189, type: 3}
+      propertyPath: audioBomba
+      value: 
+      objectReference: {fileID: 8300000, guid: ce39684e2756fc643991f3d898900820, type: 3}
+    - target: {fileID: 6893487217874600449, guid: ea9f60e81c477a14aaa381c17a15e189, type: 3}
       propertyPath: cooldownBomba
-      value: 5
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6893487217874600449, guid: ea9f60e81c477a14aaa381c17a15e189, type: 3}
       propertyPath: prefabParticulasOndaBomba
@@ -3047,7 +3055,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c9c9922804f16eb42be5ea4ae2bcffd8, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8c4805f0a20bda04db9d2ab56945f49f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
