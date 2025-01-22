@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotacionInversa: 1
+  audioGraze: {fileID: 8300000, guid: a820aa3814afd7846a92c0593fda0c08, type: 3}
 --- !u!1 &4819653952798974920
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +216,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f30b41dd5cad56642a4f2424b302c7ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -268,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadNormal: 4.5
   velocidadReducida: 2.25
+  puedeMoverse: 1
   hitboxInterior: {fileID: 9056550165411354631}
   hitboxPuntos: {fileID: 6116768085385077016}
   hitboxGraze: {fileID: 584552945296709431}
@@ -290,7 +292,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balaPrefab: {fileID: 3024607057915445280, guid: 8bea1d61259acb34eb78caf5090ff95b, type: 3}
-  ratioDisparo: 0.2
+  ratioDisparoBase: 0.2
+  damageModificador: 1
+  atraviesa: 0
   posicionDisparo: {fileID: 221887119525223159}
   audioDisparo: {fileID: 8300000, guid: 49f9494a71b26e84b8dd88fce0a337f2, type: 3}
 --- !u!70 &2652382943665302808
@@ -353,13 +357,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5237195932565632379}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.4, y: -1.8000002, z: -0.1}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5973278868646987286}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6893487217874600449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,10 +376,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea36a25b645cd07449cb588cb83694bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownBomba: 45
-  prefabParticulasOndaBomba: {fileID: 0}
+  cooldownBomba: 60
+  damageBomba: 100
+  prefabParticulasOndaBomba: {fileID: 4867538544194912753, guid: d7e6d1d48b22ed341b6e628ccf2281b2, type: 3}
   teclaBomba: 101
   botonMandoBomba: ZR
+  audioBomba: {fileID: 8300000, guid: ce39684e2756fc643991f3d898900820, type: 3}
 --- !u!1 &5750728278455248081
 GameObject:
   m_ObjectHideFlags: 0

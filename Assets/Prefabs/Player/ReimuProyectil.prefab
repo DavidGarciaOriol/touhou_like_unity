@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidad: 10
   damage: 1
+  jugador: {fileID: 951304089482557482, guid: ea9f60e81c477a14aaa381c17a15e189, type: 3}
 --- !u!50 &3802545386745739545
 Rigidbody2D:
   serializedVersion: 4

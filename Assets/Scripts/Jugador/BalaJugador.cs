@@ -3,16 +3,21 @@ using UnityEngine;
 public class BalaJugador : MonoBehaviour
 {
     public float velocidad = 10f;
-    public int damage = 1;
+
+    [SerializeField]
+    int damage = 1;
     int damageModificador = 0;
-    int finalDamage = 0;
+    public int finalDamage = 0;
+
+    [SerializeField]
+    Jugador jugador;
 
     Animator animacion;
     SpriteRenderer sprite;
 
     void Start()
     {
-        damageModificador = GetComponentInParent<DisparoJugador>().damageModificador;
+        damageModificador = jugador.GetComponent<DisparoJugador>().damageModificador;
         finalDamage = damage * damageModificador;
         Destroy(gameObject, 3f);
     }
@@ -21,5 +26,20 @@ public class BalaJugador : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector2.up * velocidad * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision != null) 
+        { 
+            if (collision.CompareTag("Enemy"))
+            {
+                collision.GetComponent<Enemigo>().RecibirDamage(finalDamage);
+                if (!jugador.GetComponent<DisparoJugador>().atraviesa)
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 }

@@ -6,11 +6,14 @@ public class DisparoJugador : MonoBehaviour
     public GameObject balaPrefab;
 
     // Ritmo de disparo
-    public float ratioDisparoBase = 0.1f;
-    float ratioDisparo;
+    public float ratioDisparoBase = 0.2f;
+    float ratioDisparo = 0.2f;
 
     // Modificador de daño
-    public int damageModificador;
+    public int damageModificador = 1;
+
+    // Atraviesa
+    public bool atraviesa = false;
 
     // Posición de salida de la bala / diapro
     public Transform posicionDisparo;
@@ -30,7 +33,7 @@ public class DisparoJugador : MonoBehaviour
     void Update()
     {
         // Se calcula el ratio de disparo para saber si puede disparar de nuevo o no
-        if (Time.time >= tiempoSiguienteDisparo)
+        if (Time.time >= tiempoSiguienteDisparo && GetComponentInParent<Jugador>().puedeMoverse)
         {
             Disparar();
 

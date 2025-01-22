@@ -230,14 +230,4 @@ public class Enemigo : MonoBehaviour
 
         yield break;
     }
-
-    // Si el enemigo colisiona con la hitbox del jugador, resta vidas al mismo
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("ReimuBullet"))
-        {
-            RecibirDamage(collision.GetComponent<BalaJugador>().damage);
-            Destroy(collision.gameObject);
-        }
-    }
 }

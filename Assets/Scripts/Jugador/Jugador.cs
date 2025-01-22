@@ -14,7 +14,7 @@ public class Jugador : MonoBehaviour
     private Vector2 velocidadActual;
 
     // Si el jugador puede moverse. False al recibir daño por ejemplo.
-    private bool puedeMoverse = true;
+    public bool puedeMoverse = true;
 
     // Si está pulsando la tecla de focus
     bool estaReduciendoVelocidad = false;
