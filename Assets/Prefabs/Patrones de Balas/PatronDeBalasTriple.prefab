@@ -49,6 +49,6 @@ MonoBehaviour:
   numeroBalas: 3
   anguloInicial: 270
   espaciadoAngulo: 15
-  velocidadBala: 4.5
+  velocidadBala: 3
   numeroIteraciones: 1
   atacando: 0

@@ -12,6 +12,7 @@ TagManager:
   - Point
   - EnemyBullet
   - ReimuBullet
+  - ReimuBombParticles
   layers:
   - Default
   - TransparentFX

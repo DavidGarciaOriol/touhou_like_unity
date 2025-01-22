@@ -237,6 +237,7 @@ public class Enemigo : MonoBehaviour
         if (collision.CompareTag("ReimuBullet"))
         {
             RecibirDamage(collision.GetComponent<BalaJugador>().damage);
+            Destroy(collision.gameObject);
         }
     }
 }

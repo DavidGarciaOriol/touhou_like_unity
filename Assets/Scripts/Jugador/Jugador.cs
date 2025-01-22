@@ -8,21 +8,31 @@ using Random = UnityEngine.Random;
 public class Jugador : MonoBehaviour
 {
     // Velocidad del personaje
-    float velocidadMaxima = 5f;
-    public float velocidadNormal = 5f;
-    public float velocidadReducida = 2f;
+    float velocidadMaxima = 4.5f;
+    public float velocidadNormal = 4.5f;
+    public float velocidadReducida = 2.25f;
+    private Vector2 velocidadActual;
 
+    // Si el jugador puede moverse. False al recibir daño por ejemplo.
     private bool puedeMoverse = true;
 
+    // Si está pulsando la tecla de focus
     bool estaReduciendoVelocidad = false;
-
-    Vector2 velocidadActual;
+    
+    // Dirección del movimiento del personaje
+    private Vector2 direccionMovimiento;
 
     // Componente Rigidbody
     private Rigidbody2D rigidbody2D;
 
-    // Dirección del movimiento del personaje
-    private Vector2 direccionMovimiento;
+    // Restricciones de movimiento
+    private Vector2 limitesMinimos;
+    private Vector2 limitesMaximos;
+
+    // Componente SpriteRenderer Reimu
+    private SpriteRenderer spriteRendererReimu;
+    private Color spriteReimuColorBase;
+    private Color newReimuSpriteColor;
 
     // Hitbox
     public GameObject hitboxInterior;
@@ -43,6 +53,8 @@ public class Jugador : MonoBehaviour
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        spriteRendererReimu = GetComponent<SpriteRenderer>();
+        spriteReimuColorBase = spriteRendererReimu.color;
 
         // Posición inicial
         if (posicionInicial == null)
@@ -54,6 +66,17 @@ public class Jugador : MonoBehaviour
         }
 
         OcultarReimuHitbox();
+
+        // Calcula los límites del escenario usando la cámara principal
+        Camera camara = Camera.main;
+        if (camara != null)
+        {
+            Vector3 esquinaInferiorIzquierda = camara.ViewportToWorldPoint(new Vector3(0, 0, 0));
+            Vector3 esquinaSuperiorDerecha = camara.ViewportToWorldPoint(new Vector3(1, 1, 0));
+
+            limitesMinimos = new Vector2(esquinaInferiorIzquierda.x, esquinaInferiorIzquierda.y);
+            limitesMaximos = new Vector2(esquinaSuperiorDerecha.x, esquinaSuperiorDerecha.y);
+        }
 
     }
 
@@ -67,16 +90,31 @@ public class Jugador : MonoBehaviour
         ManejoInputs();
         Movimiento();
 
+        // Restringe la posición del jugador dentro de los límites
+        Vector3 posicionRestringida = transform.position;
+        posicionRestringida.x = Mathf.Clamp(posicionRestringida.x, limitesMinimos.x, limitesMaximos.x);
+        posicionRestringida.y = Mathf.Clamp(posicionRestringida.y, limitesMinimos.y, limitesMaximos.y);
+        transform.position = posicionRestringida;
+
         velocidadActual = rigidbody2D.velocity;
 
-        if (velocidadActual.magnitude > 2.5f || velocidadActual.magnitude == 0f)
+        if (!estaReduciendoVelocidad)
         {
             OcultarReimuHitbox();
+            CambiarColorPersonaje(spriteReimuColorBase);
         }
         else
         {
             MostrarReimuHitbox();
+            newReimuSpriteColor = spriteReimuColorBase;
+            newReimuSpriteColor.a = 0.6f;
+            CambiarColorPersonaje(newReimuSpriteColor);
         }
+    }
+
+    private void CambiarColorPersonaje(Color color)
+    {
+        spriteRendererReimu.color = color;
     }
 
     private void OnDisable()
@@ -87,16 +125,17 @@ public class Jugador : MonoBehaviour
     // Recoge los inputs del mando / teclado
     void ManejoInputs()
     {
+        // Axis de movimiento en teclado y mando
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
         // Comprobar tecla de reducción de velocidad
         estaReduciendoVelocidad = Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("ZL") > 0.1f;
 
-        // Ajustar velocidad máxima según el estado de reducción
+        // Ajustar velocidad máxima segú si la reduce o no
         velocidadMaxima = estaReduciendoVelocidad ? velocidadReducida : velocidadNormal;
 
-
+        // Asignar mahnitudes y velocidad a la dirección de movimiento
         direccionMovimiento = new Vector2(horizontal, vertical);
     }
     void MostrarReimuHitbox()
@@ -150,6 +189,9 @@ public class Jugador : MonoBehaviour
 
         Debug.Log("Vidas restadas.");
 
+        // Detiene el movimiento del jugador
+        DetenerMovimiento();
+
         StartCoroutine(ProcesoPerderVida());
 
         Debug.Log("Entrado en la corutina, terminando RecibirDamage().");
@@ -190,6 +232,9 @@ public class Jugador : MonoBehaviour
     void DesactivarJugadorVisualmente()
     {
         Debug.Log("Desactivando componentes del jugador.");
+
+        // Detiene el movimiento del jugador. Repetido por seguridad
+        DetenerMovimiento();
 
         // Desactiva el renderer
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -235,6 +280,16 @@ public class Jugador : MonoBehaviour
 
         if (hitboxPuntos != null)
             hitboxPuntos.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    void DetenerMovimiento()
+    {
+        // Detén el movimiento del Rigidbody
+        if (rigidbody2D != null)
+        {
+            direccionMovimiento = Vector2.zero;
+            rigidbody2D.velocity = Vector2.zero;
+        }
     }
 
     // Genera los puntos despedidos al perder vida

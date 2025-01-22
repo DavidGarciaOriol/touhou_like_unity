@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8064345740857017601}
   - component: {fileID: -4969681515568670607}
   - component: {fileID: -6475510456481360106}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BalaEnemigaNormal
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f01b80ec4c221f4ca71ed76355e93f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiempoVida: 5
+  tiempoVida: 10
 --- !u!58 &-4969681515568670607
 CircleCollider2D:
   m_ObjectHideFlags: 0

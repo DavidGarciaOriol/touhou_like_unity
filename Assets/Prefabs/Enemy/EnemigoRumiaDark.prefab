@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3062164495732573030}
   - component: {fileID: -5814004262966684911}
   - component: {fileID: -1027912075204466395}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EnemigoRumiaDark
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   posicionDesplazamientoObjetivo: {x: 0, y: 0}
-  velocidad: 1.75
+  velocidad: 1.6
   salud: 10
   puntoPrefab: {fileID: 5094499987204499163, guid: 473dcb4bcb186a448a229411a9dcacdd, type: 3}
   cantidadPuntos: 3

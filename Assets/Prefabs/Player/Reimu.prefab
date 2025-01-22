@@ -120,7 +120,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.715
 --- !u!114 &4595414931354046655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +172,7 @@ Transform:
   - {fileID: 6092656965025377360}
   - {fileID: 7741252720340995261}
   - {fileID: 4987223452888056645}
+  - {fileID: 597042361673026622}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7094865216412861559
@@ -265,8 +266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a86f3a104d479b4e99ac926687ddce8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadNormal: 5
-  velocidadReducida: 2
+  velocidadNormal: 4.5
+  velocidadReducida: 2.25
   hitboxInterior: {fileID: 9056550165411354631}
   hitboxPuntos: {fileID: 6116768085385077016}
   hitboxGraze: {fileID: 584552945296709431}
@@ -289,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balaPrefab: {fileID: 3024607057915445280, guid: 8bea1d61259acb34eb78caf5090ff95b, type: 3}
-  ratioDisparo: 0.1
+  ratioDisparo: 0.2
   posicionDisparo: {fileID: 221887119525223159}
   audioDisparo: {fileID: 8300000, guid: 49f9494a71b26e84b8dd88fce0a337f2, type: 3}
 --- !u!70 &2652382943665302808
@@ -327,6 +328,54 @@ CapsuleCollider2D:
   m_Offset: {x: -0.04, y: 0.02}
   m_Size: {x: 0.7, y: 1.15}
   m_Direction: 0
+--- !u!1 &5237195932565632379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 597042361673026622}
+  - component: {fileID: 6893487217874600449}
+  m_Layer: 0
+  m_Name: Bomba
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &597042361673026622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5237195932565632379}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.4, y: -1.8000002, z: -0.1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5973278868646987286}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &6893487217874600449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5237195932565632379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea36a25b645cd07449cb588cb83694bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownBomba: 45
+  prefabParticulasOndaBomba: {fileID: 0}
+  teclaBomba: 101
+  botonMandoBomba: ZR
 --- !u!1 &5750728278455248081
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,7 +540,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.8
 --- !u!1 &9056550165411354631
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,4 +674,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2692028
+  m_Radius: 0.155

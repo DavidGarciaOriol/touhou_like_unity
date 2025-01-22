@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8064345740857017601}
   - component: {fileID: -4969681515568670607}
   - component: {fileID: -6475510456481360106}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BalaEnemigaGrande
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
