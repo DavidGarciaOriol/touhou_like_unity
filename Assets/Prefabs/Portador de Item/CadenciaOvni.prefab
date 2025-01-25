@@ -147,3 +147,4 @@ MonoBehaviour:
   cantidadObjetos: 1
   salud: 10
   sonidoAparicion: {fileID: 8300000, guid: 4e11d009b9d95fe4b9d062fa3155296f, type: 3}
+  sonidoRecibirDamage: {fileID: 8300000, guid: 143ed6098757dd84b84344f608c6f309, type: 3}

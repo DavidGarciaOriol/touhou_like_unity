@@ -6,16 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
+    // Instancia del GameManager
     public static GameManager instance;
+
+    // Parámetros por defecto que se muestran en la escena para vidas, puntos y graze.
     private int puntuacion = 0;
     private int vidasReimu = 3;
     private int contadorGraze = 0;
 
     public GameObject panelGameOver;
+    public GameObject panelGuardarPuntuacion;
 
     public TextMeshProUGUI puntuacionFinal;
 
+    
     private void Awake()
     {
         if (instance == null)
@@ -27,11 +31,10 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         panelGameOver.SetActive(false);
     }
 
-    // Suma puntosal jugador en la partida
+    // Suma puntos al jugador en la partida
     public void AgregarPuntos(int puntos)
     {
         puntuacion += puntos;
@@ -49,7 +52,6 @@ public class GameManager : MonoBehaviour
         {
             puntuacion -= puntos;
         }
-
         ActualizarPuntuacionUI();
     }
 
@@ -61,15 +63,15 @@ public class GameManager : MonoBehaviour
         {
             puntosPerdidos = Mathf.RoundToInt(puntuacion * 0.2f);
             RestarPuntos(puntosPerdidos);
-            
         }
-
         return puntosPerdidos; 
     }
 
     public void RestarVidas()
     {
         vidasReimu --;
+        if (vidasReimu < 0) vidasReimu = 0;
+
         ActualizarVidasUI();
         VerificarGameOver();
     }
@@ -92,8 +94,15 @@ public class GameManager : MonoBehaviour
         {
             puntuacionFinal.text = "Score: " + puntuacion;
             panelGameOver.SetActive(true);
+            Destroy(Bomba.instance.gameObject);
             Time.timeScale = 0; // Pausar el juego
         }
+    }
+
+    public void MostrarPanelGuardarPuntuacion()
+    {
+        panelGuardarPuntuacion.SetActive(true);
+        panelGuardarPuntuacion.GetComponent<RecordInput>().PrepararRecordInput(puntuacion);
     }
 
     void ActualizarPuntuacionUI()
@@ -111,17 +120,15 @@ public class GameManager : MonoBehaviour
         ManagerUI.instance.ActualizarTextoGraze(contadorGraze);
     }
 
-    public void ReiniciarJuego()
+    /*public void ReiniciarJuego()
     {
-        Time.timeScale = 1; // Reanudar el tiempo
+        // Reinicio de variables y tiempo del juego
+        ReiniciarEstado();
 
-        // Restablecer variables
-        vidasReimu = 3;
-        puntuacion = 0;
-
-        // Actualizar UI
+        // Actualizar UIs
         ActualizarVidasUI();
         ActualizarPuntuacionUI();
+        ActualizarGrazingUI();
 
         // Ocultar pantalla de Game Over
         panelGameOver.SetActive(false);
@@ -130,14 +137,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void SalirDelJuego()
+    public void ReiniciarEstado()
     {
-        #if UNITY_EDITOR
-            // En el editor, detiene el modo de juego.
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            // En una compilación, cierra la aplicación.
-            Application.Quit();
-        #endif
-    }
+        vidasReimu = 3;
+        puntuacion = 0;
+        contadorGraze = 0;
+
+        if (panelGameOver != null)
+        {
+            panelGameOver.SetActive(false);
+        }
+
+        Time.timeScale = 1; // Asegúrate de reanudar el tiempo
+    }*/
 }

@@ -95,6 +95,7 @@ public class Bomba : MonoBehaviour
         // Encuentra todos los objetos de tipo "Enemigo" y "Proyectil" en la escena y derrota / destruye
         Enemigo[] enemigos = FindObjectsOfType<Enemigo>();
         BalaEnemiga[] proyectiles = FindObjectsOfType<BalaEnemiga>();
+        OvniPortaItem[] ovnis = FindObjectsOfType<OvniPortaItem>();
 
         foreach (Enemigo enemigo in enemigos)
         {
@@ -105,6 +106,11 @@ public class Bomba : MonoBehaviour
         {
             Destroy(proyectil.gameObject);
             GameManager.instance.AgregarPuntos(5);
+        }
+
+        foreach (OvniPortaItem ovni in ovnis)
+        {
+            ovni.RecibirDamage(damageBomba);
         }
     }
 

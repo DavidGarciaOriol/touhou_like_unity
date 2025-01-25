@@ -9,11 +9,10 @@ public class HitboxPoints : MonoBehaviour
     public bool rotacionInversa = false;
     Quaternion rotacion;
 
-    // Update is called once per frame
     void Update()
     {
+        // Rotación de la hitbox
         float direccion = rotacionInversa ? -1f : 1f;
-
         transform.Rotate(0f, 0f, velocidadRotacion * direccion * Time.deltaTime);
     }
 }

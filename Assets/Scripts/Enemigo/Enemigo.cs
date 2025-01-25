@@ -100,7 +100,6 @@ public class Enemigo : MonoBehaviour
                 posicionSalida = new Vector2(4f, transform.position.y);
             }
         }
-
     }
 
     // Corrutina que se encarga de la lógica de ataque

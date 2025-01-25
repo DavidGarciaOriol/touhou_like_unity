@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class OvniPortaItem : MonoBehaviour
 {
+    /* Sí, soy plenamente consciente de que esta clase y Enemigo podrían tener
+     * una clase padre común. Si no lo he hecho así es porque los ovnis no
+     * se plantearon desde el inicio, y me di cuenta de que su comportamiento
+     * sería similar mientras los desarrollaba.
+     * 
+     * En caso de necesitar una tercera vez un objeto destruible por el
+     * jugador, ya sí usaría una clase padre o dos para manejar comportamientos
+     * de movimiento, y comportamientos de lógica comunes en ellos.
+     */
+
     [SerializeField] // Referencia al item que suelta al ser destruido
     GameObject objetoMejora;
 
@@ -34,6 +44,10 @@ public class OvniPortaItem : MonoBehaviour
     // Sonido de aparición del Ovni
     [SerializeField]
     AudioClip sonidoAparicion;
+
+    // Clip audio recibir daño
+    [SerializeField]
+    AudioClip sonidoRecibirDamage;
 
     void Start()
     {
@@ -70,6 +84,7 @@ public class OvniPortaItem : MonoBehaviour
     public void RecibirDamage(int damageRecibido)
     {
         salud -= damageRecibido;
+        ControladorSonidos.instance.ReproducirSonido(sonidoRecibirDamage, 0.25f);
         StartCoroutine(EfectoAlSerGolpeado());
         if (salud <= 0)
         {

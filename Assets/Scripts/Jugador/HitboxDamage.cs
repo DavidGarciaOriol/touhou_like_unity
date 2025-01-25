@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class HitboxDamage : MonoBehaviour
@@ -7,7 +6,6 @@ public class HitboxDamage : MonoBehaviour
     // Velocidad rotación.
     float velocidadRotacion = 25;
     public bool rotacionInversa = false;
-    Quaternion rotacion;
 
     // Update is called once per frame
     void Update()
@@ -21,7 +19,7 @@ public class HitboxDamage : MonoBehaviour
     {
         if (collision != null)
         {
-            if (collision.CompareTag("EnemyBullet") || collision.CompareTag("Enemy"))
+            if (collision.CompareTag("EnemyBullet") || collision.CompareTag("Enemy") || collision.CompareTag("UFOItem"))
             {
                 GetComponentInParent<Jugador>().RecibirDamage();
             }
