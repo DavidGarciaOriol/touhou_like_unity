@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DisparoJugador : MonoBehaviour
@@ -5,21 +6,39 @@ public class DisparoJugador : MonoBehaviour
     // Objeto prefab del la bala / disparo
     public GameObject balaPrefab;
 
-    // Ritmo de disparo
-    public float ratioDisparoBase = 0.2f;
-    float ratioDisparo = 0.2f;
+    // Cadencia de disparo
+    [SerializeField]
+    float cadenciaBase = 0.2f;
+    float cadenciaModificador = 0.2f;
+    float cadenciaDisparoMinima = 0.075f;
+    public float CadenciaModificador { get => cadenciaModificador; set => cadenciaModificador = value; }
 
     // Modificador de daño
-    public int damageModificador = 1;
+    [SerializeField]
+    int damageBase = 1;
+    int damageModificador = 1;
+    int damageMaximo = 5;
+    public int DamageModificador { get => damageModificador; set => damageModificador = value; }
 
     // Atraviesa
-    public bool atraviesa = false;
+    [SerializeField]
+    bool penetracion = false;
+    public bool Penetracion { get => penetracion; set => penetracion = value; }
+    
+    // Posición de salida de la bala / disparo
+    [SerializeField]
+    Transform posicionDisparo;
 
-    // Posición de salida de la bala / diapro
-    public Transform posicionDisparo;
+    // Posiciones disponibles de disparo
+    /*[SerializeField]
+    int numeroPosicionesDisparoBase = 1;
+    int numeroPosicionesDisparoActual = 1;
+    int numeroPosicionesDisparoMaxima = 5;
+    public int NumeroPosicionesDisparoActual { get => numeroPosicionesDisparoActual; set => numeroPosicionesDisparoActual = value; }
+    */
 
     // Temporizador
-    private float tiempoSiguienteDisparo;
+    float tiempoSiguienteDisparo;
 
     // Clip de sonido
     [SerializeField]
@@ -27,7 +46,7 @@ public class DisparoJugador : MonoBehaviour
 
     void Start()
     {
-        ratioDisparo = ratioDisparoBase;
+        CadenciaModificador = cadenciaBase;
     }
 
     void Update()
@@ -38,23 +57,85 @@ public class DisparoJugador : MonoBehaviour
             Disparar();
 
             // Se refresca y recalcula el tiempo para el siguiente disparo
-            tiempoSiguienteDisparo = Time.time + ratioDisparo;
+            tiempoSiguienteDisparo = Time.time + CadenciaModificador;
         }
     }
 
     // Genera el disparo en la posición de disparo.
     void Disparar()
     {
-        // ControladorSonidos.instance.ReproducirSonido(audioDisparo);
-        Instantiate(balaPrefab, posicionDisparo.position, Quaternion.identity);
+        GameObject nuevaBala = Instantiate(balaPrefab, posicionDisparo.position, Quaternion.identity);
+        BalaJugador balaScript = nuevaBala.GetComponent<BalaJugador>();
+
+        if (balaScript != null)
+        {
+            balaScript.DamageModificador = DamageModificador;
+            balaScript.Penetracion = Penetracion;
+        }
     }
 
-    void MejorarRatioDisparo(float modificador)
+    // Disminuye la cadencia de disparo
+    public void MejorarCadencia(float mejora)
     {
-        ratioDisparo -= modificador;
+        if (cadenciaModificador > cadenciaDisparoMinima)
+        {
+            CadenciaModificador -= mejora;
+        }
+        else
+        {
+            cadenciaModificador = cadenciaDisparoMinima;
+        }
+        ActualizarUICadencia();
     }
-    void ReiniciarRatioDisparo()
+
+    // Restaura la cadencia al valor base
+    public void ReiniciarCadencia()
     {
-        ratioDisparo = ratioDisparoBase;
+        CadenciaModificador = cadenciaBase;
+        ActualizarUICadencia();
     }
+
+    // Mejora el daño del disparo
+    public void MejorarDamage(int mejora)
+    {
+        if (damageModificador < damageMaximo)
+        {
+            DamageModificador += mejora;
+        }
+        else
+        {
+            DamageModificador = damageMaximo;
+        }
+        ActualizarUIPoder();
+    }
+
+    // Restaura el daño al valor base
+    public void ReiniciarDamage()
+    {
+        DamageModificador = damageBase;
+        ActualizarUIPoder();
+    }
+
+    // Cambia el estado de las balas, si perforan o no, por parámetro
+    public void CambiarPenetracion(bool condicion)
+    {
+        Penetracion = condicion;
+        ActualizarUIPerforacion(Penetracion);
+    }
+
+    void ActualizarUIPoder()
+    {
+        ManagerUI.instance.ActualizarTextoPoder(damageModificador);
+    }
+
+    void ActualizarUICadencia()
+    {
+        ManagerUI.instance.ActualizarTextoCadencia(cadenciaModificador);
+    }
+
+    void ActualizarUIPerforacion(bool perforando)
+    {
+        ManagerUI.instance.ActualizarTextoPerforacion(perforando);
+    }
+
 }

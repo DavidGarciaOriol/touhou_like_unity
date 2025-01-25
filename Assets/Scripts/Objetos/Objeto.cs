@@ -14,6 +14,10 @@ public class Objeto : MonoBehaviour
     // Si está siendo atraido al jugador
     bool siendoAtraidoAlJugador = false;
 
+    // Referencia fuente de audio
+    [SerializeField]
+    AudioClip audioObjetoObtenido;
+
     void Update()
     {
         // Si está siendo atraido al juagdor, se desplaza hacia él hasta alcanzarlo, en caso contrario, solo cae hacia abajo
@@ -37,5 +41,13 @@ public class Objeto : MonoBehaviour
     {
         siendoAtraidoAlJugador = true;
         jugador = jugadorTransform;
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("ReimuPointsCollectionHitbox"))
+        {
+            ControladorSonidos.instance.ReproducirSonido(audioObjetoObtenido, 0.6f);
+        }
     }
 }

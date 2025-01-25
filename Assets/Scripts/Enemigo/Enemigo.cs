@@ -46,6 +46,13 @@ public class Enemigo : MonoBehaviour
     // Numero de ciclos de disparo
     public int ciclosDisparo = 3;
 
+    // Si está en animación de muerte
+    public bool muriendo;
+
+    // Clip audio recibir daño
+    [SerializeField]
+    AudioClip sonidoRecibirDamage;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -64,6 +71,11 @@ public class Enemigo : MonoBehaviour
         {
             AbandonarPantalla();
         }
+
+        if (patronInstancia != null && muriendo)
+        {
+            patronInstancia.GetComponent<PatronDeBalas>().DetenerPatron();
+        }
     }
 
     // Movimiento hacia la posición de disparo
@@ -71,7 +83,7 @@ public class Enemigo : MonoBehaviour
     {
         transform.position = Vector2.MoveTowards(transform.position, posicionDesplazamientoObjetivo, velocidad * Time.deltaTime);
 
-        if ((Vector2)transform.position == posicionDesplazamientoObjetivo)
+        if ((Vector2)transform.position == posicionDesplazamientoObjetivo && !muriendo)
         {
             posicionObjetivoAlcanzada = true;
             StartCoroutine(RealizarAtaque());
@@ -134,10 +146,11 @@ public class Enemigo : MonoBehaviour
         }
     }
 
-    // Cuando recibe daño del jugador
+    // Cuando recibe daño del proyectil del jugador
     public void RecibirDamage(int damageRecibido)
     {
         salud -= damageRecibido;
+        ControladorSonidos.instance.ReproducirSonido(sonidoRecibirDamage, 0.25f);
         StartCoroutine(EfectoAlSerGolpeado());
         if (salud <= 0)
         {
@@ -155,8 +168,12 @@ public class Enemigo : MonoBehaviour
 
     // Cuando es derrotado
     void Morir()
-    {
-        animador.SetTrigger("Morir");
+    {   
+        muriendo = true;
+        if (animador != null)
+        {
+            animador.SetTrigger("Morir");
+        }
         colliderEnemigo.enabled = false;
         SoltarPuntos();
         StartCoroutine(AnimacionDeMuerte());
@@ -168,8 +185,8 @@ public class Enemigo : MonoBehaviour
         {
             Instantiate(puntoPrefab,
                 new Vector2(
-                    transform.position.x + Random.Range(-0.1f, 0.1f),
-                    transform.position.y + Random.Range(-0.1f, 0.1f)),
+                    transform.position.x + Random.Range(-0.15f, 0.15f),
+                    transform.position.y + Random.Range(-0.15f, 0.15f)),
                 Quaternion.identity);
         }
     }

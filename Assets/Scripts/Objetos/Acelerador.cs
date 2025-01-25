@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Acelerador : MonoBehaviour
+public class Acelerador : Objeto
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Mejora del modificador de cadencia
+    [SerializeField]
+    float mejorarCadencia = 0.025f;
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        base.OnTriggerEnter2D(collision);
+        if (collision.CompareTag("ReimuPointsCollectionHitbox"))
+        {
+            collision.GetComponentInParent<DisparoJugador>().MejorarCadencia(mejorarCadencia);
+            Destroy(gameObject);
+        }
     }
 }

@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balaPrefab: {fileID: 1087696319449988661, guid: e2200ebd22be03946a0bb4d7b27e0f3d, type: 3}
-  intervaloDisparo: 0.75
+  intervaloDisparo: 0.95
   numeroBalas: 5
   anguloInicial: 270
-  espaciadoAngulo: 20
-  velocidadBala: 2.5
+  espaciadoAngulo: 15
+  velocidadBala: 2.35
   numeroIteraciones: 1
   atacando: 0

@@ -13,6 +13,7 @@ TagManager:
   - EnemyBullet
   - ReimuBullet
   - ReimuBombParticles
+  - UFOItem
   layers:
   - Default
   - TransparentFX

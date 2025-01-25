@@ -22,9 +22,9 @@ public class BalaEnemiga : MonoBehaviour
     }
 
     // Al colisionar con el jugador, éste pierde una vida y la bala desaaprece
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collider.CompareTag("ReimuDamageHitbox"))
+        if (collision.CompareTag("ReimuDamageHitbox"))
         {
             Destroy(gameObject);
         }

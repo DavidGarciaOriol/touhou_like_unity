@@ -146,13 +146,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   posicionDesplazamientoObjetivo: {x: 0, y: 0}
   velocidad: 1
-  salud: 20
+  salud: 30
   puntoPrefab: {fileID: 5094499987204499163, guid: 473dcb4bcb186a448a229411a9dcacdd, type: 3}
   cantidadPuntos: 7
   patronesDeBalas:
   - {fileID: 1028792316105935624, guid: 38ae45c6407145b4c8245f3c94393da0, type: 3}
   duracionAtaque: 5
   ciclosDisparo: 5
+  muriendo: 0
+  sonidoRecibirDamage: {fileID: 8300000, guid: 143ed6098757dd84b84344f608c6f309, type: 3}
 --- !u!95 &-1027912075204466395
 Animator:
   serializedVersion: 5

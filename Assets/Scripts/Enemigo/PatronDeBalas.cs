@@ -25,22 +25,11 @@ public class PatronDeBalas : MonoBehaviour
     // Corrutina activa
     private Coroutine rutinaDisparo;
 
-    // Numero de ieraciones
-    [HideInInspector]
+    // Numero de iteraciones
     public int numeroIteraciones = 1;
 
     // Si está atacando
     public bool atacando = false;
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
 
     // Lógica para iniciar la corrutina de disparo
     public void IniciarPatron(Transform origen)
@@ -91,13 +80,8 @@ public class PatronDeBalas : MonoBehaviour
     // Genera la bala según el patrón
     private void CrearBala(Vector2 posicion, float angulo)
     {
-        GameObject bala = Instantiate(balaPrefab, posicion, Quaternion.identity);
+        GameObject bala = Instantiate(balaPrefab, posicion, Quaternion.Euler(0, 0, angulo+90));
         Vector2 direccion = new Vector2(Mathf.Cos(angulo * Mathf.Deg2Rad), Mathf.Sin(angulo * Mathf.Deg2Rad));
         bala.GetComponent<Rigidbody2D>().velocity = direccion * velocidadBala;
-    }
-
-    private void OnDisable()
-    {
-
     }
 }

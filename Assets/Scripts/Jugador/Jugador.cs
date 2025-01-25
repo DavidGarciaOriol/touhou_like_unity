@@ -1,16 +1,12 @@
-using System;
 using System.Collections;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Jugador : MonoBehaviour
 {
     // Velocidad del personaje
-    float velocidadMaxima = 4.5f;
-    public float velocidadNormal = 4.5f;
-    public float velocidadReducida = 2.25f;
+    float velocidadMaxima = 4.75f;
+    public float velocidadNormal = 4.75f;
+    public float velocidadReducida = 2.15f;
     private Vector2 velocidadActual;
 
     // Si el jugador puede moverse. False al recibir daño por ejemplo.
@@ -71,8 +67,8 @@ public class Jugador : MonoBehaviour
         Camera camara = Camera.main;
         if (camara != null)
         {
-            Vector3 esquinaInferiorIzquierda = camara.ViewportToWorldPoint(new Vector3(0, 0, 0));
-            Vector3 esquinaSuperiorDerecha = camara.ViewportToWorldPoint(new Vector3(1, 1, 0));
+            Vector2 esquinaInferiorIzquierda = new Vector2(-3.62f, -4.8f);
+            Vector2 esquinaSuperiorDerecha = new Vector2(3.62f, 4.8f);
 
             limitesMinimos = new Vector2(esquinaInferiorIzquierda.x, esquinaInferiorIzquierda.y);
             limitesMaximos = new Vector2(esquinaSuperiorDerecha.x, esquinaSuperiorDerecha.y);
@@ -98,6 +94,7 @@ public class Jugador : MonoBehaviour
 
         velocidadActual = rigidbody2D.velocity;
 
+        // Si está en modo focus, reduce velocidad, transparenta al personaje y muestra la hitbox de daño. Revierte al dejar el modo focus
         if (!estaReduciendoVelocidad)
         {
             OcultarReimuHitbox();
@@ -112,6 +109,7 @@ public class Jugador : MonoBehaviour
         }
     }
 
+    // Función para el cambio de color del sprite
     private void CambiarColorPersonaje(Color color)
     {
         spriteRendererReimu.color = color;
@@ -138,6 +136,8 @@ public class Jugador : MonoBehaviour
         // Asignar mahnitudes y velocidad a la dirección de movimiento
         direccionMovimiento = new Vector2(horizontal, vertical);
     }
+
+    // Muestra la hitbox de daño del jugador
     void MostrarReimuHitbox()
     {
         if (hitboxInterior != null)
@@ -150,6 +150,7 @@ public class Jugador : MonoBehaviour
         }
     }
 
+    // Oculta la hitbox de daño del jugador
     void OcultarReimuHitbox()
     {
         if (hitboxInterior != null)
@@ -165,14 +166,10 @@ public class Jugador : MonoBehaviour
     // Procesa el movimiento del jugador
     void Movimiento()
     {
-        if (direccionMovimiento.magnitude > 0 && estaReduciendoVelocidad)
-        {
-            direccionMovimiento.Normalize();
-        }
-
         rigidbody2D.velocity = new Vector2(direccionMovimiento.x * velocidadMaxima, direccionMovimiento.y * velocidadMaxima);
     }
 
+    // Cuando el jugador recibe daño
     public void RecibirDamage()
     {
         if (esInvulnerable)
@@ -181,20 +178,24 @@ public class Jugador : MonoBehaviour
             return;
         }
 
-        ControladorSonidos.instance.ReproducirSonido(audioMuerte);
+        ControladorSonidos.instance.ReproducirSonido(audioMuerte, 0.65f);
 
         esInvulnerable = true;
 
+        // Resta vidas al jugador
         GameManager.instance.RestarVidas();
-
         Debug.Log("Vidas restadas.");
 
         // Detiene el movimiento del jugador
         DetenerMovimiento();
 
-        StartCoroutine(ProcesoPerderVida());
+        // Reinicia las mejoras obtenidas por el jugador
+        GetComponent<DisparoJugador>().ReiniciarCadencia();
+        GetComponent<DisparoJugador>().ReiniciarDamage();
+        GetComponent<DisparoJugador>().CambiarPenetracion(false);
 
-        Debug.Log("Entrado en la corutina, terminando RecibirDamage().");
+        // Inicia la secuencia de perder una vida (reaparición + invencible)
+        StartCoroutine(ProcesoPerderVida());
     }
 
     IEnumerator ProcesoPerderVida()
@@ -211,17 +212,16 @@ public class Jugador : MonoBehaviour
         // GenerarPuntosDespedidos();
 
         // Desactivamos al jugador temporalmente de forma visual
-        DesactivarJugadorVisualmente();
+        CambiarVisualizacionJugador(false);
         Debug.Log("Jugador desactivado temporalmente.");
 
         // Reaparece el jugador en la posición inicial tras esperar un segundo
         yield return new WaitForSeconds(1f);
-
         transform.position = posicionInicial.position;
         Debug.Log("Posición inicial asignada: " + transform.position);
 
         // Reactivamos el visual del jugador
-        ActivarJugadorVisualmente();
+        CambiarVisualizacionJugador(true);
         Debug.Log("Jugador reactivado.");
 
         // Activamos invulnerabilidad por dos segundos
@@ -229,57 +229,38 @@ public class Jugador : MonoBehaviour
         puedeMoverse = true;
     }
 
-    void DesactivarJugadorVisualmente()
+    void CambiarVisualizacionJugador(bool visible)
     {
-        Debug.Log("Desactivando componentes del jugador.");
+        if (!visible)
+        {
+            Debug.Log("Desactivando componentes del jugador.");
 
-        // Detiene el movimiento del jugador. Repetido por seguridad
-        DetenerMovimiento();
+            // Detiene el movimiento del jugador. Repetido por seguridad
+            DetenerMovimiento();
+        } else
+        {
+            Debug.Log("Reactivando componentes del jugador.");
+        }
 
         // Desactiva el renderer
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
-            spriteRenderer.enabled = false;
+            spriteRenderer.enabled = visible;
 
         // Desactiva el collider
         Collider2D jugadorCollider = GetComponent<Collider2D>();
         if (jugadorCollider != null)
-            jugadorCollider.enabled = false;
+            jugadorCollider.enabled = visible;
 
         // Descativa las hitboxes
         if (hitboxInterior != null)
-            hitboxInterior.GetComponent<SpriteRenderer>().enabled = false;
+            hitboxInterior.GetComponent<SpriteRenderer>().enabled = visible;
 
         if (hitboxGraze != null)
-            hitboxGraze.GetComponent<SpriteRenderer>().enabled = false;
+            hitboxGraze.GetComponent<SpriteRenderer>().enabled = visible;
 
         if (hitboxPuntos != null)
-            hitboxPuntos.GetComponent<SpriteRenderer>().enabled = false;
-    }
-
-    private void ActivarJugadorVisualmente()
-    {
-        Debug.Log("Reactivando componentes del jugador.");
-
-        // Reactiva el renderer
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-            spriteRenderer.enabled = true;
-
-        // Reactiva el collider
-        Collider2D jugadorCollider = GetComponent<Collider2D>();
-        if (jugadorCollider != null)
-            jugadorCollider.enabled = true;
-
-        // Reactiva las hitboxes
-        if (hitboxInterior != null)
-            hitboxInterior.GetComponent<SpriteRenderer>().enabled = true;
-
-        if (hitboxGraze != null)
-            hitboxGraze.GetComponent<SpriteRenderer>().enabled = true;
-
-        if (hitboxPuntos != null)
-            hitboxPuntos.GetComponent<SpriteRenderer>().enabled = true;
+            hitboxPuntos.GetComponent<SpriteRenderer>().enabled = visible;
     }
 
     void DetenerMovimiento()
@@ -349,10 +330,10 @@ public class Jugador : MonoBehaviour
         {
             if (collision.CompareTag("AttractionArea"))
             {
-                Punto[] puntosEnPantalla = FindObjectsOfType<Punto>();
-                foreach (Punto punto in puntosEnPantalla)
+                Objeto[] itemsEnPantalla = FindObjectsOfType<Objeto>();
+                foreach (Objeto item in itemsEnPantalla)
                 {
-                    punto.ActivarAtraccion(transform);
+                    item.ActivarAtraccion(transform);
                 }
             }
         }

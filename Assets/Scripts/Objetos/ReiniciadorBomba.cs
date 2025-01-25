@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReiniciadorBomba : MonoBehaviour
+public class ReiniciadorBomba : Objeto
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] // Reducción de cooldown de la bomba
+    float reduccionCooldown = 20f;
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        base.OnTriggerEnter2D(collision);
+        if (collision.CompareTag("ReimuPointsCollectionHitbox"))
+        {
+            Bomba.instance.RestarTiempoCooldown(reduccionCooldown);
+            Destroy(gameObject);
+        }
     }
 }

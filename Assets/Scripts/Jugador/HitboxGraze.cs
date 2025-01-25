@@ -31,7 +31,7 @@ public class HitboxGraze : MonoBehaviour
             
             if (collision.CompareTag("EnemyBullet") || collision.CompareTag("Enemy"))
             {
-                ControladorSonidos.instance.ReproducirSonido(audioGraze);
+                ControladorSonidos.instance.ReproducirSonido(audioGraze, 0.45f);
                 GameManager.instance.AgregarPuntos(puntos);
                 GameManager.instance.SumarContadorGraze();
             }
