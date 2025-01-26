@@ -73,7 +73,6 @@ public class Jugador : MonoBehaviour
             limitesMinimos = new Vector2(esquinaInferiorIzquierda.x, esquinaInferiorIzquierda.y);
             limitesMaximos = new Vector2(esquinaSuperiorDerecha.x, esquinaSuperiorDerecha.y);
         }
-
     }
 
     void Update()
@@ -182,6 +181,9 @@ public class Jugador : MonoBehaviour
 
         esInvulnerable = true;
 
+        // Evita que use la bomba mientras está muerto
+        Bomba.instance.JugadorMuerto = true;
+
         // Resta vidas al jugador
         GameManager.instance.RestarVidas();
         Debug.Log("Vidas restadas.");
@@ -224,9 +226,12 @@ public class Jugador : MonoBehaviour
         CambiarVisualizacionJugador(true);
         Debug.Log("Jugador reactivado.");
 
-        // Activamos invulnerabilidad por dos segundos
+        // Activamos invulnerabilidad por dos segundos y reactivamos movimiento
         StartCoroutine(ActivarInvulnerabilidad());
         puedeMoverse = true;
+
+        // Habilitamos de nuevo el uso de la bomba para el jugador
+        Bomba.instance.JugadorMuerto = false;
     }
 
     void CambiarVisualizacionJugador(bool visible)

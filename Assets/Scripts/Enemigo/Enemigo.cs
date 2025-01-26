@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemigo : MonoBehaviour
@@ -37,8 +38,8 @@ public class Enemigo : MonoBehaviour
     // Patrón de Balas
     public PatronDeBalas[] patronesDeBalas;
 
-    // Instancia Patrón de Balas
-    GameObject patronInstancia;
+    // Instancias de los Patrones de Balas
+    private List<GameObject> instanciasPatrones = new List<GameObject>();
 
     // Tiempo entre ataques o duración del ataque
     public float duracionAtaque = 3f;
@@ -64,17 +65,51 @@ public class Enemigo : MonoBehaviour
 
     void Update()
     {
-        if (!posicionObjetivoAlcanzada) {
+        // Desplazarse hacia el objetivo
+        if (!posicionObjetivoAlcanzada) 
+        {
             DesplazarseAlObjetivo();
         }
-        else if (!patronInstancia.GetComponent<PatronDeBalas>().atacando)
+
+        // Si está en el objetivo y ya no está atacando, abandonar la escena
+        else
         {
-            AbandonarPantalla();
+            // Variables para controlar numero total de patrones y
+            // si han acabado su ataque
+            int instanciasTotales = 0;
+            int instanciasFinalizadas = 0;
+            
+            // Suma la actual a las totales. Si ha terminado de atacar,
+            // se suma a finalizadas
+            foreach (GameObject instancia in instanciasPatrones)
+            {
+                instanciasTotales += 1;
+                if (!instancia.GetComponent<PatronDeBalas>().atacando)
+                {
+                    instanciasFinalizadas += 1;
+                }
+            }
+
+            // Si las instancias esperadas y finalizadas coinciden,
+            // el enemigo tiene via libre para abandonar la pantalla
+            if (instanciasFinalizadas == instanciasTotales)
+            {
+                AbandonarPantalla();
+            }
         }
 
-        if (patronInstancia != null && muriendo)
+        // Si el enemigo está muriendo, detiene todas las instancias
+        // de patrones instantáneamente
+        if (instanciasPatrones != null && muriendo)
         {
-            patronInstancia.GetComponent<PatronDeBalas>().DetenerPatron();
+            foreach (GameObject instancia in instanciasPatrones)
+            {
+                if (instancia != null)
+                {
+                    PatronDeBalas patron = instancia.GetComponent<PatronDeBalas>();
+                    patron.DetenerPatron();
+                }
+            }
         }
     }
 
@@ -105,29 +140,32 @@ public class Enemigo : MonoBehaviour
     // Corrutina que se encarga de la lógica de ataque
     private IEnumerator RealizarAtaque()
     {
+        // Limpiar la lista de instancias anteriores
+        instanciasPatrones.Clear();
+
         // Iniciar todos los patrones de balas asignados
         foreach (var patronPrefab in patronesDeBalas)
         {
             if (patronPrefab != null)
             {
-                patronInstancia = Instantiate(patronPrefab.gameObject, transform.position,  Quaternion.identity);
-                PatronDeBalas patron = patronInstancia.GetComponent<PatronDeBalas>();
+                GameObject instancia = Instantiate(patronPrefab.gameObject, transform.position, Quaternion.identity);
+                instanciasPatrones.Add(instancia); // Guardar la instancia en la lista
+
+                PatronDeBalas patron = instancia.GetComponent<PatronDeBalas>();
                 patron.numeroIteraciones = ciclosDisparo;
                 patron.intervaloDisparo = duracionAtaque / ciclosDisparo;
                 patron.IniciarPatron(transform);
             }
         }
 
-        // Esperar el tiempo del ataque.
+        // Esperar el tiempo del ataque
         yield return new WaitForSeconds(duracionAtaque);
 
-        // Finalizar todos los patrones
-        foreach (var patronPrefab in patronesDeBalas)
+        // Detener todos los patrones
+        foreach (GameObject instancia in instanciasPatrones)
         {
-            if (patronPrefab != null)
-            {
-                patronInstancia.GetComponent<PatronDeBalas>().DetenerPatron();
-            }
+            PatronDeBalas patron = instancia.GetComponent<PatronDeBalas>();
+            patron.DetenerPatron();
         }
 
         // Comenzar el movimiento de salida

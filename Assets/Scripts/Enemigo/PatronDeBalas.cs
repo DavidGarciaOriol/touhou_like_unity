@@ -37,6 +37,7 @@ public class PatronDeBalas : MonoBehaviour
         if (rutinaDisparo == null)
         {
             atacando = true;
+
             rutinaDisparo = StartCoroutine(DispararBalas(origen));
         }
     }

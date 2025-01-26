@@ -32,6 +32,10 @@ public class Bomba : MonoBehaviour
     private bool bombaDisponible = true;
     private float tiempoRestanteCooldown = 0f;
 
+    // Si el jugador está muerto (para no tirarla en caso contrario)
+    private bool jugadorMuerto;
+    public bool JugadorMuerto { get => jugadorMuerto; set => jugadorMuerto = value; }
+
     private void Awake()
     {
         if (instance == null)
@@ -47,7 +51,7 @@ public class Bomba : MonoBehaviour
     void Update()
     {
         // Detectar si se pulsa la tecla o botón del mando
-        if (bombaDisponible && (Input.GetKey(teclaBomba) || Input.GetAxis("ZR") > 0.1f))
+        if (!JugadorMuerto && bombaDisponible && (Input.GetKey(teclaBomba) || Input.GetAxis("ZR") > 0.1f))
         {
             UsarBomba();
         }
@@ -63,7 +67,7 @@ public class Bomba : MonoBehaviour
         }
     }
 
-    private void ActualizarTemporizadorUI()
+    void ActualizarTemporizadorUI()
     {
         ManagerUI.instance.ActualizarTextoBombaCooldown(tiempoRestanteCooldown);
     }
@@ -139,7 +143,7 @@ public class Bomba : MonoBehaviour
             // Si el cooldown llega a cero, activar la bomba disponible
             tiempoRestanteCooldown = 0f;
             bombaDisponible = true;
-            ControladorSonidos.instance.ReproducirSonido(audioBombaLista, 1f);
+            // ControladorSonidos.instance.ReproducirSonido(audioBombaLista, 1f);
         }
     }
 }
